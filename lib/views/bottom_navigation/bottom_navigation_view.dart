@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_books_client/core/constants/app_strings.dart';
+import 'package:google_books_client/core/theme/app_sizes.dart';
 import 'package:google_books_client/views/favourites/favourites_page.dart';
 import 'package:google_books_client/views/home/home_page.dart';
 
@@ -29,11 +30,11 @@ class _BottomNavigationViewState extends State<BottomNavigationView> {
         onTap: _onTap,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home, size: AppSizes.iconSize,),
             label: AppStrings.homeTitle,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.favorite, size: AppSizes.iconSize,),
             label: AppStrings.favouritesTitle,
           ),
         ],
