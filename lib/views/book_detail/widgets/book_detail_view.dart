@@ -26,9 +26,9 @@ class _BookDetailViewState extends State<BookDetailView> {
     return authors.join(", ");
   }
 
-  void _onFavourite() {
+  void _onFavourite(bool isFavourite) {
     setState(() {
-      _isFavourite = !_isFavourite;
+      _isFavourite = !isFavourite;
     });
   }
 
@@ -42,7 +42,7 @@ class _BookDetailViewState extends State<BookDetailView> {
 
   Widget _getIconButton(bool isFavourite) {
     return IconButton(
-      onPressed: _onFavourite,
+      onPressed: () => _onFavourite(isFavourite),
       icon: _getFavouriteIcon(isFavourite),
       color: Colors.red,
     );
@@ -68,50 +68,47 @@ class _BookDetailViewState extends State<BookDetailView> {
             ),
           ),
           const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            book!.volumeInfo.title,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            ),
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          book!.volumeInfo.title,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
                           ),
-                          const SizedBox(height: 4),
-                          Text(_getAuthors(book.volumeInfo.authors)),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(_getAuthors(book.volumeInfo.authors)),
+                      ],
                     ),
-                    _getIconButton(_isFavourite),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Html(
-                        data: book.volumeInfo.description ?? "",
-                        style: {
-                          "*": Style(
-                            margin: Margins.zero,
-                            padding: HtmlPaddings.zero,
-                          ),
-                        },
-                      ),
+                  ),
+                  _getIconButton(_isFavourite),
+                ],
+              ),
+              const Divider(),
+              Row(
+                children: [
+                  Flexible(
+                    child: Html(
+                      data: book.volumeInfo.description ?? "",
+                      style: {
+                        "*": Style(
+                          margin: Margins.zero,
+                          padding: HtmlPaddings.zero,
+                        ),
+                      },
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
