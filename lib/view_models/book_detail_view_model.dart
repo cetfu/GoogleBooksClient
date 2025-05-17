@@ -9,10 +9,12 @@ class BookDetailViewModel extends ChangeNotifier {
   bool _isLoading = false;
 
   Book? get book => _book;
+
   bool get isLoading => _isLoading;
 
   Future<void> loadBook(String id) async {
-    if(_isLoading) return;
+    // do not reload the loaded book.
+    if (_isLoading || _book?.id == id) return;
     _isLoading = true;
     notifyListeners();
 

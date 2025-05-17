@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_books_client/view_models/book_detail_view_model.dart';
 import 'package:google_books_client/views/book_detail/book_detail_page.dart';
+import 'package:provider/provider.dart';
 
 class BookListPageGridItem extends StatelessWidget {
   final String id;
@@ -28,6 +30,10 @@ class BookListPageGridItem extends StatelessWidget {
   final TextStyle _authorsStyle = const TextStyle(color: Colors.grey);
 
   void _onTap(BuildContext context, String id) {
+    final vm = Provider.of<BookDetailViewModel>(context, listen: false);
+
+    //Preload mechanism
+    vm.loadBook(id);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => BookDetailPage(id: id)),
