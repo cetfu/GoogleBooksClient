@@ -31,4 +31,15 @@ class BookService {
     }
   }
 
+  Future<Book> fetchBookByID(String id) async {
+      final uri = Uri.parse("${Api.baseUrl}/$id");
+      final response = await http.get(uri);
+      final jsonData = jsonDecode(response.body);
+
+      if(response.statusCode == 200){
+        return Book.fromJson(jsonData);
+      } else{
+        throw Exception("An unknown error occurred");
+      }
+  }
 }
