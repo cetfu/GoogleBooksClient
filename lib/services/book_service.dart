@@ -7,12 +7,19 @@ import 'package:google_books_client/models/error_model.dart';
 import "package:http/http.dart" as http;
 
 class BookService {
-  Future<ApiResult<BooksResponse>> fetchBooks(String query) async {
-    final uri = Uri.parse(
-      Api.baseUrl,
-    ).replace(queryParameters: {"q": query, "orderBy": "relevance"});
-    final response = await http.get(uri);
+  Future<ApiResult<BooksResponse>> fetchBooks(
+      String query, {
+        int startIndex = 0,
+        int maxResults = 20,
+      }) async {
+    final uri = Uri.parse(Api.baseUrl).replace(queryParameters: {
+      "q": query,
+      "orderBy": "relevance",
+      "startIndex": startIndex.toString(),
+      "maxResults": maxResults.toString(),
+    });
 
+    final response = await http.get(uri);
     final jsonData = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
@@ -23,4 +30,5 @@ class BookService {
       throw Exception("An unknown error occurred");
     }
   }
+
 }

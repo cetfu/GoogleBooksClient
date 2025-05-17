@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_books_client/models/book_model.dart';
+import 'package:google_books_client/models/error_model.dart';
 import 'package:google_books_client/services/book_service.dart';
 
 class BookListViewModel extends ChangeNotifier {
   final BookService _bookService = BookService();
+  final int _maxResults = 20;
   List<Book> _books = [];
   bool _isLoaded = false;
   String? _error = "";
+  int _page = 0;
+  bool _hasMore = true;
 
   List<Book> get books => _books;
 
@@ -14,21 +18,55 @@ class BookListViewModel extends ChangeNotifier {
 
   String? get error => _error;
 
-  Future<void> loadBooks(String query) async {
-    if (_isLoaded) return;
-    final response = await _bookService.fetchBooks(query);
-    if(response.data != null){
-      _books = response.data!.items;
-    } else if(response.error != null){
-      _error = response.error?.error.message;
-    }
+  bool get hasMore => _hasMore;
+
+  int get currentPage => _page;
+
+  Future<void> loadBooks(String query, {int page = 0}) async {
+    if (_isLoaded || !_hasMore) return;
+
     _isLoaded = true;
+    notifyListeners();
+
+    final startIndex = page * _maxResults;
+    final response = await _bookService.fetchBooks(
+      query,
+      startIndex: startIndex,
+      maxResults: _maxResults,
+    );
+
+    if (response.data != null) {
+      _handleSuccessResponse(response.data!, page);
+    } else if (response.error != null) {
+      _handleErrorResponse(response.error!);
+    }
+
+    _isLoaded = false;
     notifyListeners();
   }
 
   Future<void> reFetchBooks(String query) async {
     _isLoaded = false;
     _error = "";
-    await loadBooks(query);
+    _books = [];
+    _page = 0;
+    _hasMore = true;
+    await loadBooks(query, page: 0);
+  }
+
+  void _handleSuccessResponse(BooksResponse data, int page) {
+    final items = data.items;
+    if (items.isNotEmpty) {
+      _books.addAll(data.items);
+      _page = page;
+      _hasMore = items.length == _maxResults;
+    } else {
+      _hasMore = false;
+    }
+  }
+
+  void _handleErrorResponse(ErrorResponse error) {
+    _error = error.error.message;
+    _hasMore = false;
   }
 }
