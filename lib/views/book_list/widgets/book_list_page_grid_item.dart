@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_books_client/views/book_detail/book_detail_page.dart';
 
 class BookListPageGridItem extends StatelessWidget {
   final String id;
@@ -26,14 +27,17 @@ class BookListPageGridItem extends StatelessWidget {
   final TextStyle _titleStyle = const TextStyle(fontWeight: FontWeight.w700);
   final TextStyle _authorsStyle = const TextStyle(color: Colors.grey);
 
-  void _onTap(BuildContext context) {
-    print("tap $id");
+  void _onTap(BuildContext context, String id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => BookDetailPage(id: id)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _onTap(context),
+      onTap: () => _onTap(context, id),
       child: Column(
         spacing: 6,
         crossAxisAlignment: CrossAxisAlignment.start,
