@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_books_client/core/common/circular_progress_indicator_with_center.dart';
 import 'package:google_books_client/core/common/layout_view.dart';
 import 'package:google_books_client/view_models/book_list_view_model.dart';
 import 'package:google_books_client/views/book_list/widgets/book_list_page_grid.dart';
@@ -20,7 +21,7 @@ class BookListPage extends StatelessWidget {
         child: Consumer<BookListViewModel>(
           builder: (context, vm, child) {
             if (vm.isLoading) {
-              return Center(child: CircularProgressIndicator());
+              return CircularProgressIndicatorWithCenter();
             }
             return BookListPageGrid();
           },
