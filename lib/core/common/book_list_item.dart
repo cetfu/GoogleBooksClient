@@ -47,6 +47,21 @@ class BookListItem extends StatelessWidget {
     );
   }
 
+  Widget? _getThumbnailImage(String? thumbnail) {
+    if (thumbnail == null || thumbnail.isEmpty) {
+      return const Image(
+        image: AssetImage("assets/book_not_found.png"),
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Image.network(
+      thumbnail,
+      fit: BoxFit.cover,
+      width: double.infinity,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -58,11 +73,7 @@ class BookListItem extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                thumbnail!,
-                fit: BoxFit.cover,
-                width: double.infinity,
-              ),
+              child: _getThumbnailImage(thumbnail),
             ),
           ),
           Column(
