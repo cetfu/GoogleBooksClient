@@ -64,9 +64,9 @@ class _BookDetailViewState extends State<BookDetailView> {
 
     return SingleChildScrollView(
       child: Column(
+        spacing: 16,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 16),
           SizedBox(
             height: MediaQuery.of(context).size.height * .6,
             child: ClipRRect(
@@ -78,7 +78,6 @@ class _BookDetailViewState extends State<BookDetailView> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
           Column(
             children: [
               Row(
