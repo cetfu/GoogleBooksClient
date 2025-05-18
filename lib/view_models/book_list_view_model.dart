@@ -11,6 +11,7 @@ class BookListViewModel extends ChangeNotifier {
   String? _error = "";
   int _page = 0;
   bool _hasMore = true;
+  String? _lastQuery = "";
 
   List<Book> get books => _books;
 
@@ -23,7 +24,7 @@ class BookListViewModel extends ChangeNotifier {
   int get currentPage => _page;
 
   Future<void> loadBooks(String query, {int page = 0}) async {
-    if (_isLoading || !_hasMore) return;
+    if (_isLoading || !_hasMore || _lastQuery == query) return;
 
     _isLoading = true;
     notifyListeners();
@@ -34,6 +35,7 @@ class BookListViewModel extends ChangeNotifier {
       startIndex: startIndex,
       maxResults: _maxResults,
     );
+    _lastQuery = query;
 
     if (response.data != null) {
       _handleSuccessResponse(response.data!, page);
@@ -46,12 +48,14 @@ class BookListViewModel extends ChangeNotifier {
   }
 
   Future<void> reFetchBooks(String query) async {
+    if (_lastQuery == query) return;
     _isLoading = false;
     _error = "";
     _books = [];
     _page = 0;
     _hasMore = true;
     await loadBooks(query, page: 0);
+    _lastQuery = query;
   }
 
   void _handleSuccessResponse(BooksResponse data, int page) {
