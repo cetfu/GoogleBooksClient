@@ -3,17 +3,17 @@ import 'package:google_books_client/view_models/book_detail_view_model.dart';
 import 'package:google_books_client/views/book_detail/book_detail_page.dart';
 import 'package:provider/provider.dart';
 
-class BookListPageGridItem extends StatelessWidget {
+class BookListItem extends StatelessWidget {
   final String id;
   final String title;
-  final String thumbnail;
+  final String? thumbnail;
   final List<String>? authors;
 
-  const BookListPageGridItem({
+  const BookListItem({
     super.key,
     required this.id,
     required this.title,
-    required this.thumbnail,
+    this.thumbnail,
     required this.authors,
   });
 
@@ -52,7 +52,7 @@ class BookListPageGridItem extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Image.network(
-                thumbnail,
+                thumbnail!,
                 fit: BoxFit.cover,
                 width: double.infinity,
               ),

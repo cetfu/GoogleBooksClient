@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_books_client/view_models/book_list_view_model.dart';
-import 'package:google_books_client/views/book_list/widgets/book_list_page_grid_item.dart';
+import 'package:google_books_client/core/common/book_list_item.dart';
 import 'package:provider/provider.dart';
 
 class BookListPageGrid extends StatelessWidget {
@@ -22,7 +22,7 @@ class BookListPageGrid extends StatelessWidget {
     String bookThumbnail = book.volumeInfo.imageLinks?.thumbnail ?? "";
     List<String>? authors = book.volumeInfo.authors;
 
-    return BookListPageGridItem(
+    return BookListItem(
       id: bookID,
       title: bookTitle,
       thumbnail: bookThumbnail,
