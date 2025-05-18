@@ -79,6 +79,7 @@ class _BookDetailViewState extends State<BookDetailView> {
             ),
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
