@@ -2,13 +2,13 @@ class Favourite {
   final String id;
   final String title;
   final List<String>? authors;
-  final String thumbnail;
+  final String? thumbnail;
 
   Favourite({
     required this.id,
     required this.title,
     this.authors,
-    required this.thumbnail,
+    this.thumbnail,
   });
 
   factory Favourite.fromJson(Map<String, dynamic> json) {
