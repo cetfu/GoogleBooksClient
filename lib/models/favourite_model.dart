@@ -16,16 +16,19 @@ class Favourite {
       id: json["id"],
       title: json["title"],
       thumbnail: json["thumbnail"],
-      authors: json["authors"],
+      authors:
+          (json["authors"] as List?)
+              ?.map((author) => author.toString())
+              .toList(),
     );
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
       "id": id,
       "title": title,
       "thumbnail": thumbnail,
-      "authors": authors
+      "authors": authors,
     };
   }
 }
