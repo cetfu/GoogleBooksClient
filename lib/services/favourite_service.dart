@@ -21,10 +21,10 @@ class FavouriteService {
   void _saveFavourites(List<Favourite> favourites) async {
     final List<String> jsonList =
         favourites.map((favourite) => jsonEncode(favourite.toJson())).toList();
-    await asyncPrefs.setStringList('favourites', jsonList);
+    await asyncPrefs.setStringList(_favouritesKey, jsonList);
   }
 
-  void toggleFavourite(Favourite fav) async {
+  Future<List<Favourite>> toggleFavourite(Favourite fav) async {
     final favourites = await getFavourites();
     final existing =
         favourites.where((favourite) => favourite.id == fav.id).toList();
@@ -36,6 +36,7 @@ class FavouriteService {
     }
 
     _saveFavourites(favourites);
+    return favourites;
   }
 
   Future<bool> isFavorite(String id) async {
