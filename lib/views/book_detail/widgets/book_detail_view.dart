@@ -34,6 +34,7 @@ class _BookDetailViewState extends State<BookDetailView> {
       id: book.id,
       title: book.volumeInfo.title,
       thumbnail: book.volumeInfo.imageLinks!.thumbnail,
+      authors: book.volumeInfo.authors,
     );
     vm.toggleFavorite(favourite);
   }
