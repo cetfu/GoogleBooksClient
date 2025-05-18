@@ -73,7 +73,7 @@ class _BookListPageState extends State<BookListPage> {
       body: LayoutView(
         child: Consumer<BookListViewModel>(
           builder: (context, vm, child) {
-            if (vm.isLoading) {
+            if(vm.isLoading && vm.books.isEmpty){
               return CircularProgressIndicatorWithCenter();
             }
             return BookListPageGrid();
