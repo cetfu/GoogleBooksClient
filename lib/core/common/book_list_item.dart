@@ -26,6 +26,13 @@ class BookListItem extends StatelessWidget {
     return authors.first;
   }
 
+  String _getTitle(String title) {
+    if (title.length > 50) {
+      return "${title.substring(0, 50)}...";
+    }
+    return title;
+  }
+
   final TextStyle _titleStyle = const TextStyle(fontWeight: FontWeight.w700);
   final TextStyle _authorsStyle = const TextStyle(color: Colors.grey);
 
@@ -61,7 +68,7 @@ class BookListItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: _titleStyle),
+              Text(_getTitle(title), style: _titleStyle),
               Text(_getAuthors(authors), style: _authorsStyle),
             ],
           ),
