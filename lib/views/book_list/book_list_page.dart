@@ -58,7 +58,7 @@ class _BookListPageState extends State<BookListPage> {
       appBar: AppBar(
         title:
             isSearchMode
-                ? TextField(controller: _searchQueryController)
+                ? TextField(controller: _searchQueryController, decoration: InputDecoration(hintText: "Kitap adı"),)
                 : Text(
                   AppStrings.bookListTitle,
                   style: TextStyle(fontWeight: FontWeight.w700),
