@@ -24,7 +24,7 @@ class BookListViewModel extends ChangeNotifier {
   int get currentPage => _page;
 
   Future<void> loadBooks(String query, {int page = 0}) async {
-    if (_isLoading || !_hasMore || _lastQuery == query) return;
+    if (_isLoading || !_hasMore || _lastQuery == query || query.isEmpty) return;
 
     _isLoading = true;
     notifyListeners();
@@ -48,7 +48,7 @@ class BookListViewModel extends ChangeNotifier {
   }
 
   Future<void> reFetchBooks(String query) async {
-    if (_lastQuery == query) return;
+    if (_lastQuery == query || query.isEmpty) return;
     _isLoading = false;
     _error = "";
     _books = [];
