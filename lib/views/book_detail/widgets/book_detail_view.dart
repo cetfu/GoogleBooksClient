@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:google_books_client/models/book_model.dart';
+import 'package:google_books_client/models/favourite_model.dart';
+import 'package:google_books_client/view_models/favourite_books_view_model.dart';
+import 'package:provider/provider.dart';
 
 class BookDetailView extends StatefulWidget {
   const BookDetailView({super.key, required this.book});
@@ -12,8 +15,6 @@ class BookDetailView extends StatefulWidget {
 }
 
 class _BookDetailViewState extends State<BookDetailView> {
-  bool _isFavourite = false;
-
   String _getBookThumbnail(ImageLinks? imageLinks) {
     if (imageLinks != null && imageLinks.thumbnail != null) {
       return imageLinks.thumbnail!;
@@ -26,10 +27,15 @@ class _BookDetailViewState extends State<BookDetailView> {
     return authors.join(", ");
   }
 
-  void _onFavourite(bool isFavourite) {
-    setState(() {
-      _isFavourite = !isFavourite;
-    });
+  void _onFavourite(BuildContext context, Book book, bool isFavourite) {
+    final vm = Provider.of<FavouriteBooksViewModel>(context, listen: false);
+
+    Favourite favourite = Favourite(
+      id: book.id,
+      title: book.volumeInfo.title,
+      thumbnail: book.volumeInfo.imageLinks!.thumbnail,
+    );
+    vm.toggleFavorite(favourite);
   }
 
   Widget _getFavouriteIcon(bool isFavourite) {
@@ -40,9 +46,9 @@ class _BookDetailViewState extends State<BookDetailView> {
     }
   }
 
-  Widget _getIconButton(bool isFavourite) {
+  Widget _getIconButton(BuildContext context, Book book, bool isFavourite) {
     return IconButton(
-      onPressed: () => _onFavourite(isFavourite),
+      onPressed: () => _onFavourite(context, book, isFavourite),
       icon: _getFavouriteIcon(isFavourite),
       color: Colors.red,
     );
@@ -51,6 +57,10 @@ class _BookDetailViewState extends State<BookDetailView> {
   @override
   Widget build(BuildContext context) {
     final book = widget.book;
+    final isFavourite = Provider.of<FavouriteBooksViewModel>(
+      context,
+    ).isFavourite(book!.id);
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +71,7 @@ class _BookDetailViewState extends State<BookDetailView> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Image.network(
-                _getBookThumbnail(book?.volumeInfo.imageLinks),
+                _getBookThumbnail(book.volumeInfo.imageLinks),
                 fit: BoxFit.cover,
                 width: double.infinity,
               ),
@@ -78,7 +88,7 @@ class _BookDetailViewState extends State<BookDetailView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          book!.volumeInfo.title,
+                          book.volumeInfo.title,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
@@ -89,7 +99,14 @@ class _BookDetailViewState extends State<BookDetailView> {
                       ],
                     ),
                   ),
-                  _getIconButton(_isFavourite),
+                  FutureBuilder(
+                    future: isFavourite,
+                    builder: (context, snapshot) {
+                      final isFavourite = snapshot.data ?? false;
+
+                      return _getIconButton(context, book, isFavourite);
+                    },
+                  ),
                 ],
               ),
               const Divider(),
