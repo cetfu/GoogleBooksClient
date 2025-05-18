@@ -23,12 +23,11 @@ class FavouriteBooksViewModel extends ChangeNotifier {
 
     _favourites = await favouriteService.getFavourites();
     _isLoading = false;
-
     notifyListeners();
   }
 
-  void toggleFavorite(Favourite book) {
-    favouriteService.toggleFavourite(book);
+  void toggleFavorite(Favourite book) async {
+    _favourites = await favouriteService.toggleFavourite(book);
     notifyListeners();
   }
 }
