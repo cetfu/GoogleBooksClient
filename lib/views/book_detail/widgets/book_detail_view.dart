@@ -86,6 +86,7 @@ class _BookDetailViewState extends State<BookDetailView> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 4,
                       children: [
                         Text(
                           book.volumeInfo.title,
@@ -94,7 +95,6 @@ class _BookDetailViewState extends State<BookDetailView> {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const SizedBox(height: 4),
                         Text(_getAuthors(book.volumeInfo.authors)),
                       ],
                     ),
