@@ -3,8 +3,15 @@ import 'package:google_books_client/view_models/book_list_view_model.dart';
 import 'package:google_books_client/core/common/book_list_item.dart';
 import 'package:provider/provider.dart';
 
-class BookListPageGrid extends StatelessWidget {
+class BookListPageGrid extends StatefulWidget {
   const BookListPageGrid({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _BookListPageGridState();
+}
+
+class _BookListPageGridState extends State<BookListPageGrid> {
+  final ScrollController _scrollController = ScrollController();
 
   final SliverGridDelegate _gridDelegate =
       const SliverGridDelegateWithFixedCrossAxisCount(
@@ -31,13 +38,48 @@ class BookListPageGrid extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() async {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      final vm = Provider.of<BookListViewModel>(context, listen: false);
+
+      if (!vm.isLoading && vm.hasMore) {
+        await vm.loadMoreBooks();
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<BookListViewModel>(
       builder: (context, vm, child) {
-        return GridView.builder(
-          itemCount: vm.books.length,
-          gridDelegate: _gridDelegate,
-          itemBuilder: _itemBuilder,
+        return Column(
+          children: [
+            Expanded(
+              child: GridView.builder(
+                controller: _scrollController,
+                itemCount: vm.books.length,
+                gridDelegate: _gridDelegate,
+                itemBuilder: _itemBuilder,
+              ),
+            ),
+            if (vm.isLoading)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: CircularProgressIndicator(),
+              ),
+          ],
         );
       },
     );

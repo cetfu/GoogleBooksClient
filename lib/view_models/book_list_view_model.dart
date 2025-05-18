@@ -17,14 +17,16 @@ class BookListViewModel extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
+  bool get hasMore => _hasMore;
+
   String? get error => _error;
 
-  bool get hasMore => _hasMore;
+  String? get lastQuery => _lastQuery;
 
   int get currentPage => _page;
 
   Future<void> loadBooks(String query, {int page = 0}) async {
-    if (_isLoading || !_hasMore || _lastQuery == query || query.isEmpty) return;
+    if (_isLoading || !_hasMore || query.isEmpty) return;
 
     _isLoading = true;
     notifyListeners();
@@ -56,6 +58,15 @@ class BookListViewModel extends ChangeNotifier {
     _hasMore = true;
     await loadBooks(query, page: 0);
     _lastQuery = query;
+  }
+
+  Future<void> loadMoreBooks() async {
+    if (_isLoading || !_hasMore || _lastQuery == null || _lastQuery!.isEmpty){
+      return;
+    }
+
+    final nextPage = _page + 1;
+    await loadBooks(_lastQuery!, page: nextPage);
   }
 
   void _handleSuccessResponse(BooksResponse data, int page) {
