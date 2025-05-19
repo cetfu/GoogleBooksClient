@@ -17,8 +17,6 @@ class _BookListPageGridState extends State<BookListPageGrid> {
       const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 3 / 5,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
       );
 
   Widget? _itemBuilder(BuildContext context, int index) {

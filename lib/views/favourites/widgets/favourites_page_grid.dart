@@ -11,8 +11,6 @@ class FavouritesPageGrid extends StatelessWidget {
       const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 3 / 5,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
       );
 
   Widget? _itemBuilder(BuildContext context, int index) {
