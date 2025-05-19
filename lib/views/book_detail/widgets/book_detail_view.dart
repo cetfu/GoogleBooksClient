@@ -94,19 +94,21 @@ class _BookDetailViewState extends State<BookDetailView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 4,
-                children: [
-                  Text(
-                    "${book.volumeInfo.title} - ${book.volumeInfo.publishedDate}",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 4,
+                  children: [
+                    Text(
+                      "${book.volumeInfo.title} - ${book.volumeInfo.publishedDate}",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  Text(_getAuthors(book.volumeInfo.authors)),
-                ],
+                    Text(_getAuthors(book.volumeInfo.authors)),
+                  ],
+                ),
               ),
               FutureBuilder(
                 future: isFavourite,
