@@ -7,10 +7,13 @@ class BookDetailViewModel extends ChangeNotifier {
 
   Book? _book;
   bool _isLoading = false;
+  List<Book> _publisherBooks = [];
 
   Book? get book => _book;
 
   bool get isLoading => _isLoading;
+
+  List<Book> get publisherBooks => _publisherBooks;
 
   Future<void> loadBook(String id) async {
     // do not reload the loaded book.
@@ -21,6 +24,16 @@ class BookDetailViewModel extends ChangeNotifier {
     final response = await _bookService.fetchBookByID(id);
     _book = response;
     _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> loadPublishersBooks(String? publisher) async {
+    if(publisher!.isEmpty) return;
+    final response = await _bookService.fetchBooksByPublisher(publisher);
+
+    if (response.data != null) {
+      _publisherBooks = response.data!.items;
+    }
     notifyListeners();
   }
 }
