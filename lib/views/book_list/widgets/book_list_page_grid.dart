@@ -62,26 +62,19 @@ class _BookListPageGridState extends State<BookListPageGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BookListViewModel>(
-      builder: (context, vm, child) {
-        return Column(
-          children: [
-            Expanded(
-              child: GridView.builder(
-                controller: _scrollController,
-                itemCount: vm.books.length,
-                gridDelegate: _gridDelegate,
-                itemBuilder: _itemBuilder,
-              ),
-            ),
-            if (vm.isLoading)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: CircularProgressIndicator(),
-              ),
-          ],
-        );
-      },
+    final vm = Provider.of<BookListViewModel>(context);
+
+    return Column(
+      children: [
+        Expanded(
+          child: GridView.builder(
+            controller: _scrollController,
+            itemCount: vm.books.length,
+            gridDelegate: _gridDelegate,
+            itemBuilder: _itemBuilder,
+          ),
+        ),
+      ],
     );
   }
 }

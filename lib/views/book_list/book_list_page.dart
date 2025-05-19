@@ -80,7 +80,16 @@ class _BookListPageState extends State<BookListPage> {
             if (vm.isLoading && vm.books.isEmpty) {
               return CircularProgressIndicatorWithCenter();
             }
-            return BookListPageGrid();
+            return Column(
+              children: [
+                Expanded(child: BookListPageGrid()),
+                if (vm.isLoading)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: CircularProgressIndicator(),
+                  )
+              ],
+            );
           },
         ),
       ),
