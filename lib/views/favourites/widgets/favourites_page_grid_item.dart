@@ -14,6 +14,7 @@ class FavouritesPageGridItem extends StatelessWidget {
       title: favourite.title,
       thumbnail: favourite.thumbnail,
       authors: favourite.authors,
+      publishedDate: favourite.publishedDate,
     );
   }
 }

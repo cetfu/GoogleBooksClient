@@ -8,6 +8,7 @@ class BookListItem extends StatelessWidget {
   final String title;
   final String? thumbnail;
   final List<String>? authors;
+  final String? publishedDate;
 
   const BookListItem({
     super.key,
@@ -15,6 +16,7 @@ class BookListItem extends StatelessWidget {
     required this.title,
     this.thumbnail,
     required this.authors,
+    required this.publishedDate,
   });
 
   String _getAuthors(List<String>? authors) {
@@ -34,6 +36,8 @@ class BookListItem extends StatelessWidget {
     color: Colors.grey,
     overflow: TextOverflow.ellipsis,
   );
+
+  final TextStyle _publishedDateStyle = const TextStyle(color: Colors.grey);
 
   void _onTap(BuildContext context, String id) {
     final vm = Provider.of<BookDetailViewModel>(context, listen: false);
@@ -69,13 +73,19 @@ class BookListItem extends StatelessWidget {
           children: [
             Expanded(child: _getThumbnailImage(thumbnail)),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5),
+              padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 2,
                 children: [
                   Text(title, style: _titleStyle),
-                  Text(_getAuthors(authors), style: _authorsStyle),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: Text(_getAuthors(authors), style: _authorsStyle)),
+                      if (publishedDate != null) Text(publishedDate!, style: _publishedDateStyle,),
+                    ],
+                  ),
                 ],
               ),
             ),

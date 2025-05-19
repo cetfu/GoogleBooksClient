@@ -3,12 +3,14 @@ class Favourite {
   final String title;
   final List<String>? authors;
   final String? thumbnail;
+  final String? publishedDate;
 
   Favourite({
     required this.id,
     required this.title,
     this.authors,
     this.thumbnail,
+    required this.publishedDate,
   });
 
   factory Favourite.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class Favourite {
           (json["authors"] as List?)
               ?.map((author) => author.toString())
               .toList(),
+      publishedDate: json["publishedDate"],
     );
   }
 
@@ -29,6 +32,7 @@ class Favourite {
       "title": title,
       "thumbnail": thumbnail,
       "authors": authors,
+      "publishedDate": publishedDate
     };
   }
 }

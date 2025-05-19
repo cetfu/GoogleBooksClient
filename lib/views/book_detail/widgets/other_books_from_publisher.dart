@@ -23,6 +23,7 @@ class OtherBooksFromPublisher extends StatelessWidget {
       title: book.volumeInfo.title,
       authors: book.volumeInfo.authors,
       thumbnail: book.volumeInfo.imageLinks?.thumbnail,
+      publishedDate: book.volumeInfo.publishedDate,
     );
   }
 

@@ -26,12 +26,14 @@ class _BookListPageGridState extends State<BookListPageGrid> {
     String bookTitle = book.volumeInfo.title;
     String bookThumbnail = book.volumeInfo.imageLinks?.thumbnail ?? "";
     List<String>? authors = book.volumeInfo.authors;
+    String? publishedDate = book.volumeInfo.publishedDate;
 
     return BookListItem(
       id: bookID,
       title: bookTitle,
       thumbnail: bookThumbnail,
       authors: authors,
+      publishedDate: publishedDate,
     );
   }
 
