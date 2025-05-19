@@ -26,15 +26,14 @@ class BookListItem extends StatelessWidget {
     return authors.first;
   }
 
-  String _getTitle(String title) {
-    if (title.length > 50) {
-      return "${title.substring(0, 50)}...";
-    }
-    return title;
-  }
-
-  final TextStyle _titleStyle = const TextStyle(fontWeight: FontWeight.w700);
-  final TextStyle _authorsStyle = const TextStyle(color: Colors.grey);
+  final TextStyle _titleStyle = const TextStyle(
+    fontWeight: FontWeight.w700,
+    overflow: TextOverflow.ellipsis,
+  );
+  final TextStyle _authorsStyle = const TextStyle(
+    color: Colors.grey,
+    overflow: TextOverflow.ellipsis,
+  );
 
   void _onTap(BuildContext context, String id) {
     final vm = Provider.of<BookDetailViewModel>(context, listen: false);
@@ -47,7 +46,7 @@ class BookListItem extends StatelessWidget {
     );
   }
 
-  Widget? _getThumbnailImage(String? thumbnail) {
+  Widget _getThumbnailImage(String? thumbnail) {
     if (thumbnail == null || thumbnail.isEmpty) {
       return const Image(
         image: AssetImage("assets/book_not_found.png"),
@@ -55,35 +54,33 @@ class BookListItem extends StatelessWidget {
       );
     }
 
-    return Image.network(
-      thumbnail,
-      fit: BoxFit.cover,
-      width: double.infinity,
-    );
+    return Image.network(thumbnail, fit: BoxFit.cover, width: double.infinity);
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _onTap(context, id),
-      child: Column(
-        spacing: 6,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: _getThumbnailImage(thumbnail),
+      child: Card(
+        clipBehavior: Clip.hardEdge,
+        child: Column(
+          spacing: 6,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: _getThumbnailImage(thumbnail)),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 2,
+                children: [
+                  Text(title, style: _titleStyle),
+                  Text(_getAuthors(authors), style: _authorsStyle),
+                ],
+              ),
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(_getTitle(title), style: _titleStyle),
-              Text(_getAuthors(authors), style: _authorsStyle),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
