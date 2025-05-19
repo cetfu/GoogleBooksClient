@@ -80,7 +80,7 @@ class _BookDetailViewState extends State<BookDetailView> {
 
     return SingleChildScrollView(
       child: Column(
-        spacing: 16,
+        spacing: 4,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
@@ -90,49 +90,45 @@ class _BookDetailViewState extends State<BookDetailView> {
               child: _getBookThumbnail(book.volumeInfo.imageLinks?.thumbnail),
             ),
           ),
-          Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 4,
-                      children: [
-                        Text(
-                          book.volumeInfo.title,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Text(_getAuthors(book.volumeInfo.authors)),
-                      ],
-                    ),
-                  ),
-                  FutureBuilder(
-                    future: isFavourite,
-                    builder: (context, snapshot) {
-                      final isFavourite = snapshot.data ?? false;
-
-                      return _getIconButton(context, book, isFavourite);
-                    },
-                  ),
-                ],
-              ),
-              const Divider(),
-              if (book.volumeInfo.description != null)
-                Row(
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 4,
                   children: [
-                    FlexibleHtmlMarkdown(data: book.volumeInfo.description),
+                    Text(
+                      "${book.volumeInfo.title} - ${book.volumeInfo.publishedDate}",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(_getAuthors(book.volumeInfo.authors)),
                   ],
                 ),
-              if (book.volumeInfo.description != null) Divider(),
-              OtherBooksFromPublisher(),
+              ),
+              FutureBuilder(
+                future: isFavourite,
+                builder: (context, snapshot) {
+                  final isFavourite = snapshot.data ?? false;
+
+                  return _getIconButton(context, book, isFavourite);
+                },
+              ),
             ],
           ),
+          const Divider(),
+          if (book.volumeInfo.description != null)
+            Row(
+              children: [
+                FlexibleHtmlMarkdown(data: book.volumeInfo.description),
+              ],
+            ),
+          if (book.volumeInfo.description != null) Divider(),
+          OtherBooksFromPublisher()
         ],
       ),
     );
