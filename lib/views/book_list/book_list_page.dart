@@ -58,7 +58,11 @@ class _BookListPageState extends State<BookListPage> {
       appBar: AppBar(
         title:
             isSearchMode
-                ? TextField(controller: _searchQueryController, decoration: InputDecoration(hintText: "Kitap adı"),)
+                ? TextField(
+                  controller: _searchQueryController,
+                  decoration: InputDecoration(hintText: "Kitap adı"),
+                  onSubmitted: (_) => _onPressSearch(),
+                )
                 : Text(
                   AppStrings.bookListTitle,
                   style: TextStyle(fontWeight: FontWeight.w700),
@@ -73,7 +77,7 @@ class _BookListPageState extends State<BookListPage> {
       body: LayoutView(
         child: Consumer<BookListViewModel>(
           builder: (context, vm, child) {
-            if(vm.isLoading && vm.books.isEmpty){
+            if (vm.isLoading && vm.books.isEmpty) {
               return CircularProgressIndicatorWithCenter();
             }
             return BookListPageGrid();
