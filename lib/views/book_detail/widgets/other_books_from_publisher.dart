@@ -12,7 +12,7 @@ class OtherBooksFromPublisher extends StatelessWidget {
   const SliverGridDelegateWithFixedCrossAxisCount(
     crossAxisCount: 1,
     crossAxisSpacing: 10,
-    mainAxisSpacing: 10,
+    mainAxisSpacing: 0,
     childAspectRatio: 5 / 3,
   );
 
