@@ -1,0 +1,55 @@
+name: Flutter Release CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Analyze and Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run Dart Analyze
+        run: dart analyze
+
+      - name: Decode Keystore from GitHub Secrets
+        if: success()
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}"
+
+      - name: Create key.properties
+        if: success()
+        run: |
+          cat > android/key.properties <<EOF
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          storeFile=keystore.jks
+          EOF
+
+      - name: Build release APK
+        if: success()
+        run: flutter build apk --release
+
+      - name: Upload release APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
