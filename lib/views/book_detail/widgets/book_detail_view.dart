@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:google_books_client/core/common/flexible_html_markdown.dart';
 import 'package:google_books_client/models/book_model.dart';
 import 'package:google_books_client/models/favourite_model.dart';
+import 'package:google_books_client/view_models/book_detail_view_model.dart';
 import 'package:google_books_client/view_models/favourite_books_view_model.dart';
+import 'package:google_books_client/views/book_detail/widgets/other_books_from_publisher.dart';
 import 'package:provider/provider.dart';
 
 class BookDetailView extends StatefulWidget {
@@ -15,11 +17,24 @@ class BookDetailView extends StatefulWidget {
 }
 
 class _BookDetailViewState extends State<BookDetailView> {
-  String _getBookThumbnail(ImageLinks? imageLinks) {
-    if (imageLinks != null && imageLinks.thumbnail != null) {
-      return imageLinks.thumbnail!;
+  @override
+  void initState() {
+    super.initState();
+    final vm = Provider.of<BookDetailViewModel>(context, listen: false);
+    String? publisher = widget.book!.volumeInfo.publisher;
+    vm.loadPublishersBooks(publisher);
+  }
+
+  Widget _getBookThumbnail(String? thumbnail) {
+    if (thumbnail == null || thumbnail.isEmpty) {
+      return Image(
+        image: AssetImage("assets/book_not_found.png"),
+        fit: BoxFit.cover,
+        width: double.infinity,
+      );
     }
-    return "";
+
+    return Image.network(thumbnail, fit: BoxFit.cover, width: double.infinity);
   }
 
   String _getAuthors(List<String>? authors) {
@@ -71,11 +86,7 @@ class _BookDetailViewState extends State<BookDetailView> {
             height: MediaQuery.of(context).size.height * .6,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                _getBookThumbnail(book.volumeInfo.imageLinks),
-                fit: BoxFit.cover,
-                width: double.infinity,
-              ),
+              child: _getBookThumbnail(book.volumeInfo.imageLinks?.thumbnail),
             ),
           ),
           Column(
@@ -111,21 +122,14 @@ class _BookDetailViewState extends State<BookDetailView> {
                 ],
               ),
               const Divider(),
-              Row(
-                children: [
-                  Flexible(
-                    child: Html(
-                      data: book.volumeInfo.description ?? "",
-                      style: {
-                        "*": Style(
-                          margin: Margins.zero,
-                          padding: HtmlPaddings.zero,
-                        ),
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              if (book.volumeInfo.description != null)
+                Row(
+                  children: [
+                    FlexibleHtmlMarkdown(data: book.volumeInfo.description),
+                  ],
+                ),
+              if (book.volumeInfo.description != null) Divider(),
+              OtherBooksFromPublisher(),
             ],
           ),
         ],
