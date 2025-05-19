@@ -50,7 +50,7 @@ class _BookDetailViewState extends State<BookDetailView> {
       title: book.volumeInfo.title,
       thumbnail: book.volumeInfo.imageLinks!.thumbnail,
       authors: book.volumeInfo.authors,
-      publishedDate: book.volumeInfo.publishedDate
+      publishedDate: book.volumeInfo.publishedDate,
     );
     vm.toggleFavorite(favourite);
   }
@@ -94,21 +94,19 @@ class _BookDetailViewState extends State<BookDetailView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 4,
-                  children: [
-                    Text(
-                      "${book.volumeInfo.title} - ${book.volumeInfo.publishedDate}",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 4,
+                children: [
+                  Text(
+                    "${book.volumeInfo.title} - ${book.volumeInfo.publishedDate}",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
                     ),
-                    Text(_getAuthors(book.volumeInfo.authors)),
-                  ],
-                ),
+                  ),
+                  Text(_getAuthors(book.volumeInfo.authors)),
+                ],
               ),
               FutureBuilder(
                 future: isFavourite,
@@ -128,7 +126,7 @@ class _BookDetailViewState extends State<BookDetailView> {
               ],
             ),
           if (book.volumeInfo.description != null) Divider(),
-          OtherBooksFromPublisher()
+          OtherBooksFromPublisher(),
         ],
       ),
     );
