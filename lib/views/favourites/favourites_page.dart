@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_books_client/core/common/circular_progress_indicator_with_center.dart';
 import 'package:google_books_client/core/common/layout_view.dart';
+import 'package:google_books_client/core/constants/app_strings.dart';
 import 'package:google_books_client/view_models/favourite_books_view_model.dart';
 import 'package:google_books_client/views/favourites/widgets/favourites_page_grid.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,12 @@ class FavouritesPage extends StatelessWidget {
     });
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          AppStrings.favouritesTitle,
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
+      ),
       body: LayoutView(
         child: Consumer<FavouriteBooksViewModel>(
           builder: (context, vm, child) {
