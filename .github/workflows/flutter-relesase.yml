@@ -31,7 +31,7 @@ jobs:
       - name: Decode Keystore from GitHub Secrets
         if: success()
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}"
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
 
       - name: Create key.properties
         if: success()
