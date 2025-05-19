@@ -37,7 +37,10 @@ class BookListItem extends StatelessWidget {
     overflow: TextOverflow.ellipsis,
   );
 
-  final TextStyle _publishedDateStyle = const TextStyle(color: Colors.grey);
+  final TextStyle _publishedDateStyle = const TextStyle(
+    color: Colors.grey,
+    fontSize: 12,
+  );
 
   void _onTap(BuildContext context, String id) {
     final vm = Provider.of<BookDetailViewModel>(context, listen: false);
@@ -82,10 +85,18 @@ class BookListItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(child: Text(_getAuthors(authors), style: _authorsStyle)),
-                      if (publishedDate != null) Text(publishedDate!, style: _publishedDateStyle,),
+                      Expanded(
+                        child: Text(_getAuthors(authors), style: _authorsStyle),
+                      ),
                     ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      if (publishedDate != null)
+                        Text(publishedDate!, style: _publishedDateStyle),
+                    ],
+                  )
                 ],
               ),
             ),
