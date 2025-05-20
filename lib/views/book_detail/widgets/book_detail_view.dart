@@ -100,13 +100,15 @@ class _BookDetailViewState extends State<BookDetailView> {
                   spacing: 4,
                   children: [
                     Text(
-                      "${book.volumeInfo.title} - ${book.volumeInfo.publishedDate}",
+                      book.volumeInfo.title,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Text(_getAuthors(book.volumeInfo.authors)),
+                    Text(
+                      "${_getAuthors(book.volumeInfo.authors)} ${book.volumeInfo.publishedDate}",
+                    ),
                   ],
                 ),
               ),
